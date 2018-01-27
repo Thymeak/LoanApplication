@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblProvinceEntityViewDlg" widgetVar="TblProvinceEntityViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTblProvinceEntityTitle}">
+            <h:form id="TblProvinceEntityViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblProvinceEntityController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTblProvinceEntityLabel_provinceID}"/>
+                        <h:outputText value="#{tblProvinceEntityController.selected.provinceID}" title="#{bundle.ViewTblProvinceEntityTitle_provinceID}"/>
+                        <h:outputText value="#{bundle.ViewTblProvinceEntityLabel_provinceName}"/>
+                        <h:outputText value="#{tblProvinceEntityController.selected.provinceName}" title="#{bundle.ViewTblProvinceEntityTitle_provinceName}"/>
+                        <h:outputText value="#{bundle.ViewTblProvinceEntityLabel_provinceKhName}"/>
+                        <h:outputText value="#{tblProvinceEntityController.selected.provinceKhName}" title="#{bundle.ViewTblProvinceEntityTitle_provinceKhName}"/>
+                        <h:outputText value="#{bundle.ViewTblProvinceEntityLabel_status}"/>
+                        <h:outputText value="#{tblProvinceEntityController.selected.status}" title="#{bundle.ViewTblProvinceEntityTitle_status}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TblProvinceEntityViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

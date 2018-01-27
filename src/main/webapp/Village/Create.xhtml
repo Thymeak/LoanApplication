@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblVillageEntityCreateDlg" widgetVar="TblVillageEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblVillageEntityTitle}">
+            <h:form id="TblVillageEntityCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblVillageEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTblVillageEntityLabel_villageID}" for="villageID" />
+                        <p:inputText id="villageID" value="#{tblVillageEntityController.selected.villageID}" title="#{bundle.CreateTblVillageEntityTitle_villageID}" required="true" requiredMessage="#{bundle.CreateTblVillageEntityRequiredMessage_villageID}"/>
+                        <p:outputLabel value="#{bundle.CreateTblVillageEntityLabel_villageName}" for="villageName" />
+                        <p:inputText id="villageName" value="#{tblVillageEntityController.selected.villageName}" title="#{bundle.CreateTblVillageEntityTitle_villageName}" required="true" requiredMessage="#{bundle.CreateTblVillageEntityRequiredMessage_villageName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblVillageEntityLabel_villageKhName}" for="villageKhName" />
+                        <p:inputText id="villageKhName" value="#{tblVillageEntityController.selected.villageKhName}" title="#{bundle.CreateTblVillageEntityTitle_villageKhName}" required="true" requiredMessage="#{bundle.CreateTblVillageEntityRequiredMessage_villageKhName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblVillageEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblVillageEntityController.selected.status}" title="#{bundle.CreateTblVillageEntityTitle_status}" />
+                        <p:outputLabel value="#{bundle.CreateTblVillageEntityLabel_commnueID}" for="commnueID" />
+                        <p:inputText id="commnueID" value="#{tblVillageEntityController.selected.commnueID}" title="#{bundle.CreateTblVillageEntityTitle_commnueID}" required="true" requiredMessage="#{bundle.CreateTblVillageEntityRequiredMessage_commnueID}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblVillageEntityController.create}" value="#{bundle.Save}" update="display,:TblVillageEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblVillageEntityCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblVillageEntityCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

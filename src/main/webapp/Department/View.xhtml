@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblDepartmentEntityViewDlg" widgetVar="TblDepartmentEntityViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTblDepartmentEntityTitle}">
+            <h:form id="TblDepartmentEntityViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblDepartmentEntityController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTblDepartmentEntityLabel_departmentID}"/>
+                        <h:outputText value="#{tblDepartmentEntityController.selected.departmentID}" title="#{bundle.ViewTblDepartmentEntityTitle_departmentID}"/>
+                        <h:outputText value="#{bundle.ViewTblDepartmentEntityLabel_departmentName}"/>
+                        <h:outputText value="#{tblDepartmentEntityController.selected.departmentName}" title="#{bundle.ViewTblDepartmentEntityTitle_departmentName}"/>
+                        <h:outputText value="#{bundle.ViewTblDepartmentEntityLabel_departmentDescription}"/>
+                        <h:outputText value="#{tblDepartmentEntityController.selected.departmentDescription}" title="#{bundle.ViewTblDepartmentEntityTitle_departmentDescription}"/>
+                        <h:outputText value="#{bundle.ViewTblDepartmentEntityLabel_status}"/>
+                        <h:outputText value="#{tblDepartmentEntityController.selected.status}" title="#{bundle.ViewTblDepartmentEntityTitle_status}"/>
+                        <h:outputText value="#{bundle.ViewTblDepartmentEntityLabel_mainDepartmentID}"/>
+                        <h:outputText value="#{tblDepartmentEntityController.selected.mainDepartmentID}" title="#{bundle.ViewTblDepartmentEntityTitle_mainDepartmentID}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TblDepartmentEntityViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

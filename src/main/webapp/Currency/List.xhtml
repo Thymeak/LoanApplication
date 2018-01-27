@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/Template/template.xhtml">       
+
+        <ui:define name="body">
+
+            <style>
+                .ui-widget-header {
+                    text-align: left;                    
+                }
+            </style>
+            <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:panel id="basic" header="List of Currency">
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:selectOneMenu id="onemenu" style="width: 100%;margin-top: 10px;">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItem itemLabel="Currency Code" itemValue="CurrencyID" />
+                                <f:selectItem itemLabel="Currency Name" itemValue="CurrencyName" />                              
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:inputText id="input" placeholder="search" style="width: 70%;margin-top: 10px;"/>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4" style="text-align: right;">
+                            <!--<p:commandButton value="Create Currency" icon="ui-icon-plus" styleClass="ui-priority-primary" />-->
+                            <p:button value="Create Currency" outcome="/Currency/Create" icon="ui-icon-plus" styleClass="ui-priority-primary"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <p:dataTable id="datalist" value="#{CurrencyController.items}" var="item"
+                                 selectionMode="single" selection="#{CurrencyController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.currencyID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >       
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.CurrencyCode}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.currencyCode}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.CurrencyName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.currencyName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.CurrencySymbol}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.currencySymbol}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Status}"/>
+                            </f:facet>
+                            <h:outputText value="Active"/>
+                        </p:column>      
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Option}"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{CurrencyController.prepareEdit(item)}" 
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             icon="ui-icon-pencil" 
+                                             style="margin-top: 0px !important;padding: 0px !important;"/>
+                            <p:commandButton actionListener="#{CurrencyController.destroy(item)}"
+                                icon="ui-icon-trash" 
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             style="color:red;margin-top: 0px !important;padding: 0px !important;">
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </p:column> 
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                    <br/>
+                </p:panel>
+            </h:form>    
+
+        </ui:define>
+    </ui:composition>
+
+</html>

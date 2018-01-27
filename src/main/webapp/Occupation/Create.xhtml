@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblOccupationEntityCreateDlg" widgetVar="TblOccupationEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblOccupationEntityTitle}">
+            <h:form id="TblOccupationEntityCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblOccupationEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTblOccupationEntityLabel_occupationID}" for="occupationID" />
+                        <p:inputText id="occupationID" value="#{tblOccupationEntityController.selected.occupationID}" title="#{bundle.CreateTblOccupationEntityTitle_occupationID}" required="true" requiredMessage="#{bundle.CreateTblOccupationEntityRequiredMessage_occupationID}"/>
+                        <p:outputLabel value="#{bundle.CreateTblOccupationEntityLabel_occupationName}" for="occupationName" />
+                        <p:inputText id="occupationName" value="#{tblOccupationEntityController.selected.occupationName}" title="#{bundle.CreateTblOccupationEntityTitle_occupationName}" required="true" requiredMessage="#{bundle.CreateTblOccupationEntityRequiredMessage_occupationName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblOccupationEntityLabel_occupationKhName}" for="occupationKhName" />
+                        <p:inputText id="occupationKhName" value="#{tblOccupationEntityController.selected.occupationKhName}" title="#{bundle.CreateTblOccupationEntityTitle_occupationKhName}" required="true" requiredMessage="#{bundle.CreateTblOccupationEntityRequiredMessage_occupationKhName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblOccupationEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblOccupationEntityController.selected.status}" title="#{bundle.CreateTblOccupationEntityTitle_status}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblOccupationEntityController.create}" value="#{bundle.Save}" update="display,:TblOccupationEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblOccupationEntityCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblOccupationEntityCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

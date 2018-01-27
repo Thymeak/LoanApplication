@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblDistrictEntityCreateDlg" widgetVar="TblDistrictEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblDistrictEntityTitle}">
+            <h:form id="TblDistrictEntityCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblDistrictEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTblDistrictEntityLabel_districtID}" for="districtID" />
+                        <p:inputText id="districtID" value="#{tblDistrictEntityController.selected.districtID}" title="#{bundle.CreateTblDistrictEntityTitle_districtID}" required="true" requiredMessage="#{bundle.CreateTblDistrictEntityRequiredMessage_districtID}"/>
+                        <p:outputLabel value="#{bundle.CreateTblDistrictEntityLabel_districtName}" for="districtName" />
+                        <p:inputText id="districtName" value="#{tblDistrictEntityController.selected.districtName}" title="#{bundle.CreateTblDistrictEntityTitle_districtName}" required="true" requiredMessage="#{bundle.CreateTblDistrictEntityRequiredMessage_districtName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblDistrictEntityLabel_districtKhName}" for="districtKhName" />
+                        <p:inputText id="districtKhName" value="#{tblDistrictEntityController.selected.districtKhName}" title="#{bundle.CreateTblDistrictEntityTitle_districtKhName}" required="true" requiredMessage="#{bundle.CreateTblDistrictEntityRequiredMessage_districtKhName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblDistrictEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblDistrictEntityController.selected.status}" title="#{bundle.CreateTblDistrictEntityTitle_status}" />
+                        <p:outputLabel value="#{bundle.CreateTblDistrictEntityLabel_provinceID}" for="provinceID" />
+                        <p:inputText id="provinceID" value="#{tblDistrictEntityController.selected.provinceID}" title="#{bundle.CreateTblDistrictEntityTitle_provinceID}" required="true" requiredMessage="#{bundle.CreateTblDistrictEntityRequiredMessage_provinceID}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblDistrictEntityController.create}" value="#{bundle.Save}" update="display,:TblDistrictEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblDistrictEntityCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblDistrictEntityCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

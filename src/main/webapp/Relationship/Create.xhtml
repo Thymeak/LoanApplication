@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblRelationshipEntityCreateDlg" widgetVar="TblRelationshipEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblRelationshipEntityTitle}">
+            <h:form id="TblRelationshipEntityCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblRelationshipEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTblRelationshipEntityLabel_relationshipID}" for="relationshipID" />
+                        <p:inputText id="relationshipID" value="#{tblRelationshipEntityController.selected.relationshipID}" title="#{bundle.CreateTblRelationshipEntityTitle_relationshipID}" required="true" requiredMessage="#{bundle.CreateTblRelationshipEntityRequiredMessage_relationshipID}"/>
+                        <p:outputLabel value="#{bundle.CreateTblRelationshipEntityLabel_relationshipName}" for="relationshipName" />
+                        <p:inputText id="relationshipName" value="#{tblRelationshipEntityController.selected.relationshipName}" title="#{bundle.CreateTblRelationshipEntityTitle_relationshipName}" required="true" requiredMessage="#{bundle.CreateTblRelationshipEntityRequiredMessage_relationshipName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblRelationshipEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblRelationshipEntityController.selected.status}" title="#{bundle.CreateTblRelationshipEntityTitle_status}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblRelationshipEntityController.create}" value="#{bundle.Save}" update="display,:TblRelationshipEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblRelationshipEntityCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblRelationshipEntityCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

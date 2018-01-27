@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblDistrictEntityViewDlg" widgetVar="TblDistrictEntityViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTblDistrictEntityTitle}">
+            <h:form id="TblDistrictEntityViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblDistrictEntityController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTblDistrictEntityLabel_districtID}"/>
+                        <h:outputText value="#{tblDistrictEntityController.selected.districtID}" title="#{bundle.ViewTblDistrictEntityTitle_districtID}"/>
+                        <h:outputText value="#{bundle.ViewTblDistrictEntityLabel_districtName}"/>
+                        <h:outputText value="#{tblDistrictEntityController.selected.districtName}" title="#{bundle.ViewTblDistrictEntityTitle_districtName}"/>
+                        <h:outputText value="#{bundle.ViewTblDistrictEntityLabel_districtKhName}"/>
+                        <h:outputText value="#{tblDistrictEntityController.selected.districtKhName}" title="#{bundle.ViewTblDistrictEntityTitle_districtKhName}"/>
+                        <h:outputText value="#{bundle.ViewTblDistrictEntityLabel_status}"/>
+                        <h:outputText value="#{tblDistrictEntityController.selected.status}" title="#{bundle.ViewTblDistrictEntityTitle_status}"/>
+                        <h:outputText value="#{bundle.ViewTblDistrictEntityLabel_provinceID}"/>
+                        <h:outputText value="#{tblDistrictEntityController.selected.provinceID}" title="#{bundle.ViewTblDistrictEntityTitle_provinceID}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TblDistrictEntityViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

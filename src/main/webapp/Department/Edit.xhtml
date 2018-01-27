@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblDepartmentEntityEditDlg" widgetVar="TblDepartmentEntityEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTblDepartmentEntityTitle}">
+            <h:form id="TblDepartmentEntityEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblDepartmentEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTblDepartmentEntityLabel_departmentID}" for="departmentID" />
+                        <p:inputText id="departmentID" value="#{tblDepartmentEntityController.selected.departmentID}" title="#{bundle.EditTblDepartmentEntityTitle_departmentID}" required="true" requiredMessage="#{bundle.EditTblDepartmentEntityRequiredMessage_departmentID}"/>
+                        <p:outputLabel value="#{bundle.EditTblDepartmentEntityLabel_departmentName}" for="departmentName" />
+                        <p:inputText id="departmentName" value="#{tblDepartmentEntityController.selected.departmentName}" title="#{bundle.EditTblDepartmentEntityTitle_departmentName}" required="true" requiredMessage="#{bundle.EditTblDepartmentEntityRequiredMessage_departmentName}"/>
+                        <p:outputLabel value="#{bundle.EditTblDepartmentEntityLabel_departmentDescription}" for="departmentDescription" />
+                        <p:inputText id="departmentDescription" value="#{tblDepartmentEntityController.selected.departmentDescription}" title="#{bundle.EditTblDepartmentEntityTitle_departmentDescription}" />
+                        <p:outputLabel value="#{bundle.EditTblDepartmentEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblDepartmentEntityController.selected.status}" title="#{bundle.EditTblDepartmentEntityTitle_status}" required="true" requiredMessage="#{bundle.EditTblDepartmentEntityRequiredMessage_status}"/>
+                        <p:outputLabel value="#{bundle.EditTblDepartmentEntityLabel_mainDepartmentID}" for="mainDepartmentID" />
+                        <p:inputText id="mainDepartmentID" value="#{tblDepartmentEntityController.selected.mainDepartmentID}" title="#{bundle.EditTblDepartmentEntityTitle_mainDepartmentID}" required="true" requiredMessage="#{bundle.EditTblDepartmentEntityRequiredMessage_mainDepartmentID}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblDepartmentEntityController.update}" value="#{bundle.Save}" update="display,:TblDepartmentEntityListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TblDepartmentEntityEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblDepartmentEntityEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

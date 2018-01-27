@@ -1,0 +1,70 @@
+<ui:composition 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <h:form>
+        <p:growl showDetail="true" sticky="true"/>
+
+        <p:menubar>
+            <p:submenu icon="fa fa-plus">
+                <p:menuitem value="About This Mac" url="#" onclick="PF('info').show();" icon="ui-icon ui-icon-info"></p:menuitem>
+            </p:submenu>
+
+            <p:submenu label="Clients">
+                <p:menuitem value="Clients" url="#" styleClass="open" icon="ui-icon ui-icon-info"></p:menuitem>
+            </p:submenu>
+
+            <p:submenu label="Loan">
+                <p:menuitem value="Individual Loan" url="#" styleClass="undo" icon="ui-icon ui-icon-arrowreturnthick-1-w"></p:menuitem>   
+                <p:menuitem value="Group Loan" url="#" styleClass="undo" icon="ui-icon ui-icon-arrowreturnthick-1-w"></p:menuitem> 
+            </p:submenu>
+
+            <p:submenu label="Report">
+                <p:menuitem value="Report" url="#" onclick="PF('source').show();" icon="ui-icon ui-icon-search"></p:menuitem>
+            </p:submenu>
+            
+            <p:submenu label="Administrative">
+                <p:menuitem value="Currency" outcome="/Currency/List" styleClass="undo" icon="ui-icon ui-icon-arrowreturnthick-1-w"></p:menuitem>   
+                <p:menuitem value="Nationality" url="#" styleClass="undo" icon="ui-icon ui-icon-arrowreturnthick-1-w"></p:menuitem> 
+            </p:submenu>
+        </p:menubar>
+        
+    </h:form>
+    
+    <p:dialog header="About This Mac" draggable="true" widgetVar="info" showEffect="fade" hideEffect="fade">
+        <h:form>
+            <h:panelGrid columns="1" style="width:100%;text-align:center;">
+                <p:graphicImage value="/Resource/images/apple.png" />
+                <h:outputText value="MOCK OS X" style="font-size:16px"/>
+                <h:outputText value="Version 10.5.7" />
+                <p:commandButton value="Software Update" async="true" onclick="return false;"/>
+            </h:panelGrid>
+
+            <h:panelGrid columns="2">
+                <h:outputText value="Processor" style="font-weight:bold"/>
+                <h:outputText value="2.4 GHz Intel Core 2 Duo" />
+
+                <h:outputText value="Memory" style="font-weight:bold"/>
+                <h:outputText value="4 GB 667 MHz DDR2 SDRAM" />
+
+                <h:outputText value="Startup Disk" style="font-weight:bold"/>
+                <h:outputText value="Macintosh HD" />
+            </h:panelGrid>
+
+        </h:form>
+    </p:dialog>    
+    
+
+<!--    <p:dock>
+        <p:menuitem value="Finder" icon="/Resource/images/finder.png" url="#" />
+        <p:menuitem value="Terminal" icon="/resources/demo/images/mockosx/terminal.png" url="#" onclick="PF('terminal').show();"/>
+        <p:menuitem value="Safari" icon="/resources/demo/images/mockosx/safari.png" url="#" />
+        <p:menuitem value="iTunes" icon="/resources/demo/images/mockosx/itunes.png" url="#"/>
+        <p:menuitem value="iChat" icon="/resources/demo/images/mockosx/ichat.png" url="#"/>
+        <p:menuitem value="Trash" icon="/resources/demo/images/mockosx/trash.png" url="#"/>
+    </p:dock>-->
+
+</ui:composition>

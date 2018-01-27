@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">    
+    
+    
+    <ui:composition template="/Template/template.xhtml">       
+        
+        <ui:define name="body">
+
+            <style>
+                .ui-widget-header {
+                    text-align: left;                    
+                }
+            </style>
+            <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:growl id="growl" showDetail="true" sticky="true"/>
+                <p:panel id="createCurrency" header="Create Currency">
+                     <p:focus context="createCurrency"/>
+                    
+                    <div class="ui-g">                  
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <p:outputLabel for="currencyCode" value="#{bundle.CurrencyCode} "/>
+                            <p:inputText id="currencyCode" 
+                                         required="true" 
+                                         requiredMessage="Currency Code is require"                                         
+                                         value="#{CurrencyController.selectedCreate.currencyCode}" />                            
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <p:outputLabel for="currencyName" value="#{bundle.CurrencyName}"/>
+                            <p:inputText id="currencyName" 
+                                         required="true" 
+                                         requiredMessage="Currency Name is require."
+                                         value="#{CurrencyController.selectedCreate.currencyName}"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <p:outputLabel for="currencySymbol" value="#{bundle.CurrencySymbol}"/>
+                            <p:inputText id="currencySymbol" 
+                                         required="true" 
+                                         requiredMessage="Currency Symbol is require."
+                                         value="#{CurrencyController.selectedCreate.currencySymbol}"/>
+                        </div>
+                    </div>
+                    <f:facet name="footer">
+                        <p:commandButton value="#{bundle.Create}" 
+                                         update="createCurrency growl" 
+                                         actionListener="#{CurrencyController.create}" 
+                                         partialSubmit="true"
+                                         validateClient="true" 
+                                         process="@form"/>
+                        <p:commandButton value="#{bundle.Clear}">
+                            <p:ajax resetValues="true" update="createCurrency" listener="#{CurrencyController.prepareCreate}"/>
+                        </p:commandButton>
+                        
+                        
+                    </f:facet>
+                </p:panel>
+            </h:form>        
+        </ui:define>
+    </ui:composition>
+
+</html>

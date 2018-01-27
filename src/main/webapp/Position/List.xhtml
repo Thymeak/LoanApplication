@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListTblPositionEntityTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="TblPositionEntityListForm">
+                <p:panel header="#{bundle.ListTblPositionEntityTitle}">
+                    <p:dataTable id="datalist" value="#{tblPositionEntityController.items}" var="item"
+                                 selectionMode="single" selection="#{tblPositionEntityController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.positionID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_positionID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.positionID}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_positionName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.positionName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_positionKhName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.positionKhName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_positionDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.positionDescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTblPositionEntityTitle_departmentID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departmentID}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tblPositionEntityController.prepareCreate}" update=":TblPositionEntityCreateForm" oncomplete="PF('TblPositionEntityCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TblPositionEntityViewForm" oncomplete="PF('TblPositionEntityViewDialog').show()" disabled="#{empty tblPositionEntityController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TblPositionEntityEditForm" oncomplete="PF('TblPositionEntityEditDialog').show()" disabled="#{empty tblPositionEntityController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tblPositionEntityController.destroy}" update=":growl,datalist" disabled="#{empty tblPositionEntityController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

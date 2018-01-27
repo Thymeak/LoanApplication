@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TblPositionEntityCreateDlg" widgetVar="TblPositionEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblPositionEntityTitle}">
+            <h:form id="TblPositionEntityCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tblPositionEntityController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_positionID}" for="positionID" />
+                        <p:inputText id="positionID" value="#{tblPositionEntityController.selected.positionID}" title="#{bundle.CreateTblPositionEntityTitle_positionID}" required="true" requiredMessage="#{bundle.CreateTblPositionEntityRequiredMessage_positionID}"/>
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_positionName}" for="positionName" />
+                        <p:inputText id="positionName" value="#{tblPositionEntityController.selected.positionName}" title="#{bundle.CreateTblPositionEntityTitle_positionName}" required="true" requiredMessage="#{bundle.CreateTblPositionEntityRequiredMessage_positionName}"/>
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_positionKhName}" for="positionKhName" />
+                        <p:inputText id="positionKhName" value="#{tblPositionEntityController.selected.positionKhName}" title="#{bundle.CreateTblPositionEntityTitle_positionKhName}" />
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_positionDescription}" for="positionDescription" />
+                        <p:inputText id="positionDescription" value="#{tblPositionEntityController.selected.positionDescription}" title="#{bundle.CreateTblPositionEntityTitle_positionDescription}" />
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tblPositionEntityController.selected.status}" title="#{bundle.CreateTblPositionEntityTitle_status}" />
+                        <p:outputLabel value="#{bundle.CreateTblPositionEntityLabel_departmentID}" for="departmentID" />
+                        <p:inputText id="departmentID" value="#{tblPositionEntityController.selected.departmentID}" title="#{bundle.CreateTblPositionEntityTitle_departmentID}" required="true" requiredMessage="#{bundle.CreateTblPositionEntityRequiredMessage_departmentID}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tblPositionEntityController.create}" value="#{bundle.Save}" update="display,:TblPositionEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblPositionEntityCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TblPositionEntityCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
