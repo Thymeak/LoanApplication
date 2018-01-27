@@ -3,7 +3,7 @@ package com.mycompany.loanapplication.controller;
 import com.mycompany.loanapplication.entities.TblDistrictEntity;
 import com.mycompany.loanapplication.controller.util.JsfUtil;
 import com.mycompany.loanapplication.controller.util.JsfUtil.PersistAction;
-import com.mycompany.loanapplication.service.TblDistrictEntityFacade;
+import com.mycompany.loanapplication.service.TblDistrictEntityService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,16 +19,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@Named("tblDistrictEntityController")
+@Named("DistrictController")
 @SessionScoped
-public class TblDistrictEntityController implements Serializable {
+public class DistrictController implements Serializable {
 
     @EJB
-    private com.mycompany.loanapplication.service.TblDistrictEntityFacade ejbFacade;
+    private com.mycompany.loanapplication.service.TblDistrictEntityService ejbFacade;
     private List<TblDistrictEntity> items = null;
     private TblDistrictEntity selected;
+    private TblDistrictEntity selectCreate;
 
-    public TblDistrictEntityController() {
+    public DistrictController() {
+        selectCreate = new TblDistrictEntity();
     }
 
     public TblDistrictEntity getSelected() {
@@ -45,20 +47,21 @@ public class TblDistrictEntityController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private TblDistrictEntityFacade getFacade() {
+    private TblDistrictEntityService getFacade() {
         return ejbFacade;
     }
 
     public TblDistrictEntity prepareCreate() {
-        selected = new TblDistrictEntity();
+        selectCreate = new TblDistrictEntity();
         initializeEmbeddableKey();
         return selected;
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TblDistrictEntityCreated"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MsgCreateDistrict"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            selectCreate = new TblDistrictEntity();
         }
     }
 
@@ -82,13 +85,17 @@ public class TblDistrictEntityController implements Serializable {
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
+        if (selected != null || selectCreate != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
+                if (persistAction == PersistAction.DELETE) {
+                    selected.setStatus(0);
                     getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                } else if(persistAction == PersistAction.CREATE) {
+                    selectCreate.setStatus(1);
+                    getFacade().create(selectCreate);
+                }else if(persistAction == PersistAction.UPDATE){
+                    getFacade().edit(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -129,7 +136,7 @@ public class TblDistrictEntityController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            TblDistrictEntityController controller = (TblDistrictEntityController) facesContext.getApplication().getELResolver().
+            DistrictController controller = (DistrictController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "tblDistrictEntityController");
             return controller.getTblDistrictEntity(getKey(value));
         }
@@ -160,6 +167,20 @@ public class TblDistrictEntityController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * @return the selectCreate
+     */
+    public TblDistrictEntity getSelectCreate() {
+        return selectCreate;
+    }
+
+    /**
+     * @param selectCreate the selectCreate to set
+     */
+    public void setSelectCreate(TblDistrictEntity selectCreate) {
+        this.selectCreate = selectCreate;
     }
 
 }

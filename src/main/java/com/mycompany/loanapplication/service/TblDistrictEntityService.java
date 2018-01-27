@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author boysothymeak
  */
 @Stateless
-public class TblDistrictEntityFacade extends AbstractFacade<TblDistrictEntity> {
+public class TblDistrictEntityService extends AbstractService<TblDistrictEntity> {
 
     @PersistenceContext(unitName = "com.mycompany_LoanApplication_war_1.0PU")
     private EntityManager em;
@@ -25,7 +25,7 @@ public class TblDistrictEntityFacade extends AbstractFacade<TblDistrictEntity> {
         return em;
     }
 
-    public TblDistrictEntityFacade() {
+    public TblDistrictEntityService() {
         super(TblDistrictEntity.class);
     }
     
