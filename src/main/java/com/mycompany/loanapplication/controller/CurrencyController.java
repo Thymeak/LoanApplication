@@ -74,7 +74,7 @@ public class CurrencyController implements Serializable {
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TblCurrencyEntityUpdated"));
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("MsgUpdateCurreny"));
     }
 
     public void destroy(TblCurrencyEntity entity) {

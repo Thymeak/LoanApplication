@@ -79,6 +79,7 @@
                                              style="margin-top: 0px !important;padding: 0px !important;"/>
                             <p:commandButton actionListener="#{CurrencyController.destroy(item)}"
                                 icon="ui-icon-trash" 
+                                update="datalist"
                                              partialSubmit="true"
                                              validateClient="true"
                                              process="@form"
