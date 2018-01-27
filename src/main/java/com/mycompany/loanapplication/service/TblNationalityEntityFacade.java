@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author boysothymeak
  */
 @Stateless
-public class TblNationalityEntityFacade extends AbstractFacade<TblNationalityEntity> {
+public class TblNationalityEntityFacade extends AbstractService<TblNationalityEntity> {
 
     @PersistenceContext(unitName = "com.mycompany_LoanApplication_war_1.0PU")
     private EntityManager em;

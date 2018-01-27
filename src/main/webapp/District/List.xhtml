@@ -6,70 +6,98 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-
-
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListTblDistrictEntityTitle}"></h:outputText>
-        </ui:define>
+    <ui:composition template="/Template/template.xhtml">       
 
         <ui:define name="body">
-            <h:form id="TblDistrictEntityListForm">
-                <p:panel header="#{bundle.ListTblDistrictEntityTitle}">
-                    <p:dataTable id="datalist" value="#{tblDistrictEntityController.items}" var="item"
-                                 selectionMode="single" selection="#{tblDistrictEntityController.selected}"
+
+            <style>
+                .ui-widget-header {
+                    text-align: left;                    
+                }
+            </style>
+            <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:panel id="basic" header="#{bundle.ListDistrict}">
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:selectOneMenu id="onemenu" style="width: 100%;margin-top: 10px;">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItem itemLabel="District Name" itemValue="District_Name" />
+                                <f:selectItem itemLabel="Khmer Name" itemValue="District_KhName" />                              
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:inputText id="input" placeholder="search" style="width: 70%;margin-top: 10px;"/>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4" style="text-align: right;">
+                            <!--<p:commandButton value="Create Currency" icon="ui-icon-plus" styleClass="ui-priority-primary" />-->
+                            <p:button value="#{bundle.CreateDistrict}" outcome="/District/Create" icon="ui-icon-plus" styleClass="ui-priority-primary"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <p:dataTable id="datalist" value="#{DistrictController.items}" var="item"
+                                 selectionMode="single" selection="#{DistrictController.selected}"
                                  paginator="true"
                                  rowKey="#{item.districtID}"
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
-                                 >
-
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                                 >       
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblDistrictEntityTitle_districtID}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.districtID}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblDistrictEntityTitle_districtName}"/>
+                                <h:outputText value="#{bundle.DistrictName}"/>
                             </f:facet>
                             <h:outputText value="#{item.districtName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblDistrictEntityTitle_districtKhName}"/>
+                                <h:outputText value="#{bundle.DistrictKhmerName}"/>
                             </f:facet>
                             <h:outputText value="#{item.districtKhName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblDistrictEntityTitle_status}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.status}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblDistrictEntityTitle_provinceID}"/>
+                                <h:outputText value="#{bundle.ProvinceID}"/>
                             </f:facet>
                             <h:outputText value="#{item.provinceID}"/>
                         </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tblDistrictEntityController.prepareCreate}" update=":TblDistrictEntityCreateForm" oncomplete="PF('TblDistrictEntityCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TblDistrictEntityViewForm" oncomplete="PF('TblDistrictEntityViewDialog').show()" disabled="#{empty tblDistrictEntityController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TblDistrictEntityEditForm" oncomplete="PF('TblDistrictEntityEditDialog').show()" disabled="#{empty tblDistrictEntityController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tblDistrictEntityController.destroy}" update=":growl,datalist" disabled="#{empty tblDistrictEntityController.selected}"/>
-                        </f:facet>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Status}"/>
+                            </f:facet>
+                            <h:outputText value="Active"/>
+                        </p:column>      
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Option}"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{CurrencyController.prepareEdit(item)}" 
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             icon="ui-icon-pencil" 
+                                             style="margin-top: 0px !important;padding: 0px !important;"/>
+                            <p:commandButton actionListener="#{CurrencyController.destroy(item)}"
+                                icon="ui-icon-trash" 
+                                update="datalist"
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             style="color:red;margin-top: 0px !important;padding: 0px !important;">
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </p:column> 
                     </p:dataTable>
-                </p:panel>
-            </h:form>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                    <br/>
+                </p:panel>
+            </h:form>    
+
         </ui:define>
     </ui:composition>
 

@@ -3,7 +3,7 @@ package com.mycompany.loanapplication.controller;
 import com.mycompany.loanapplication.entities.TblCurrencyEntity;
 import com.mycompany.loanapplication.controller.util.JsfUtil;
 import com.mycompany.loanapplication.controller.util.JsfUtil.PersistAction;
-import com.mycompany.loanapplication.service.TblCurrencyEntityFacade;
+import com.mycompany.loanapplication.service.TblCurrencyEntityService;
 import java.io.IOException;
 
 import java.io.Serializable;
@@ -25,7 +25,7 @@ import javax.faces.convert.FacesConverter;
 public class CurrencyController implements Serializable {
 
     @EJB
-    private com.mycompany.loanapplication.service.TblCurrencyEntityFacade ejbFacade;
+    private com.mycompany.loanapplication.service.TblCurrencyEntityService ejbFacade;
     private List<TblCurrencyEntity> items = null;
     private TblCurrencyEntity selected;
     private TblCurrencyEntity selectedCreate;
@@ -49,7 +49,7 @@ public class CurrencyController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private TblCurrencyEntityFacade getFacade() {
+    private TblCurrencyEntityService getFacade() {
         return ejbFacade;
     }
     

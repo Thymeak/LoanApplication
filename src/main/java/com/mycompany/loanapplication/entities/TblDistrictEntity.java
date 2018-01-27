@@ -38,8 +38,7 @@ public class TblDistrictEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = false)   
     @Column(name = "DistrictID")
     private Integer districtID;
     @Basic(optional = false)
