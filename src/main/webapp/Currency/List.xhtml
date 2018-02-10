@@ -8,18 +8,14 @@
 
     <ui:composition template="/Template/template.xhtml">       
 
-        <ui:define name="body">
-  
-            
-            
-            
-            
+        <ui:define name="body">  
             <style>
                 .ui-widget-header {
                     text-align: left;                    
                 }
             </style>
             <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:growl id="growl" showDetail="true" sticky="true"/>
                 <p:panel id="basic" header="List of Currency">
 
                     <div class="ui-g">
@@ -83,7 +79,7 @@
                                              style="margin-top: 0px !important;padding: 0px !important;"/>
                             <p:commandButton actionListener="#{CurrencyController.destroy(item)}"
                                 icon="ui-icon-trash" 
-                                update="datalist"
+                                update="@form datalist"
                                              partialSubmit="true"
                                              validateClient="true"
                                              process="@form"

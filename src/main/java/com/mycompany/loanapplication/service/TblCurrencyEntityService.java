@@ -6,6 +6,7 @@
 package com.mycompany.loanapplication.service;
 
 import com.mycompany.loanapplication.entities.TblCurrencyEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,15 @@ public class TblCurrencyEntityService extends AbstractService<TblCurrencyEntity>
     public TblCurrencyEntityService() {
         super(TblCurrencyEntity.class);
     }
-    
+
+    public List<TblCurrencyEntity> getAllCurrency() {
+        try {
+            return getEntityManager().createNamedQuery("TblCurrencyEntity.findByStatus", TblCurrencyEntity.class)
+                    .setParameter("status", 1)
+                    .getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

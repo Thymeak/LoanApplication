@@ -16,12 +16,12 @@
                     text-align: left;                    
                 }
             </style>
-                <h:form id="formCreate" style="margin-top:10%;margin-left: 10%;margin-right: 10%">
-                <p:link value="District" outcome="/District/List"/><p:link value=" / Create"/>
+                <h:form id="formEdit" style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:link value="District" outcome="/District/List"/><p:link value=" / Edit"/>
                 <br/>
                 <p:growl id="growl" showDetail="true" sticky="true"/>
-                <p:panel id="createDistrict" header="Create District">
-                    <p:focus context="createDistrict"/>
+                <p:panel id="EditDistrict" header="#{bundle.EditDistrict}">
+                    <p:focus context="EditDistrict"/>
 
                     <div class="ui-g">                  
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -29,20 +29,20 @@
                             <p:inputText id="districtName" 
                                          required="true" 
                                          requiredMessage="District Name is require"                                         
-                                         value="#{DistrictController.selectCreate.districtName}" />                            
+                                         value="#{DistrictController.selected.districtName}" />                            
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
                             <p:outputLabel for="districtKhName" value="#{bundle.DistrictKhmerName} "/>
                             <p:inputText id="districtKhName" 
                                          required="true" 
                                          requiredMessage="Khmer Name is require."
-                                         value="#{DistrictController.selectCreate.districtKhName}"/>
+                                         value="#{DistrictController.selected.districtKhName}"/>
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
-                            <p:outputLabel for="DistrictName" value="#{bundle.DistrictName} "/>              
-                            <p:selectOneMenu id="DistrictName" value="#{DistrictController.selectCreate.provinceID}" 
+                            <p:outputLabel for="provinceID" value="#{bundle.ProvinceID} "/>              
+                            <p:selectOneMenu id="provinceID" value="#{DistrictController.selected.provinceID}" 
                                              style="width:300px;margin-top: 9px;" required="true"
-                                             requiredMessage="Select Province is require."
+                                             requiredMessage="Select Provice is require."
                                              filter="true"
                                              filterMatchMode="startsWith">
                                 <f:selectItem itemLabel="#{bundle.SelectProvince}" itemValue="" noSelectionOption="true" />
@@ -51,17 +51,12 @@
                         </div>
                     </div>
                     <f:facet name="footer">
-                        <p:commandButton value="#{bundle.Create}" 
-                                         update="createDistrict growl formCreate" 
-                                         actionListener="#{DistrictController.create}" 
+                        <p:commandButton value="#{bundle.Update}" 
+                                         update="EditDistrict growl formEdit" 
+                                         actionListener="#{DistrictController.update}" 
                                          partialSubmit="true"
                                          validateClient="true" 
-                                         process="@form"/>
-                        <p:commandButton value="#{bundle.Clear}">
-                            <p:ajax resetValues="true" update="createDistrict formCreate" listener="#{DistrictController.prepareCreate}"/>
-                        </p:commandButton>
-
-
+                                         process="@form"/>                      
                     </f:facet>
                 </p:panel>
             </h:form>        

@@ -6,6 +6,8 @@
 package com.mycompany.loanapplication.service;
 
 import com.mycompany.loanapplication.entities.TblVillageEntity;
+import com.mycompany.loanapplication.entities.TblVillageEntity_Custom;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +17,7 @@ import javax.persistence.PersistenceContext;
  * @author boysothymeak
  */
 @Stateless
-public class TblVillageEntityFacade extends AbstractService<TblVillageEntity> {
+public class TblVillageEntityService extends AbstractService<TblVillageEntity> {
 
     @PersistenceContext(unitName = "com.mycompany_LoanApplication_war_1.0PU")
     private EntityManager em;
@@ -25,8 +27,19 @@ public class TblVillageEntityFacade extends AbstractService<TblVillageEntity> {
         return em;
     }
 
-    public TblVillageEntityFacade() {
+    public TblVillageEntityService() {
         super(TblVillageEntity.class);
     }
-    
+
+    public List<TblVillageEntity_Custom> getAllVillage() {
+        try {
+            String query = "SELECT v.*,c.Commnue_Name FROM dbo.tbl_Village v\n"
+                    + "JOIN dbo.tbl_Commnue c ON v.CommnueID = c.CommnueID\n"
+                    + "WHERE v.Status=1;";
+            return getEntityManager().createNativeQuery(query, TblVillageEntity_Custom.class)
+                    .getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

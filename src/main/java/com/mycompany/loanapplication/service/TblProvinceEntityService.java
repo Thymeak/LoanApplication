@@ -6,6 +6,7 @@
 package com.mycompany.loanapplication.service;
 
 import com.mycompany.loanapplication.entities.TblProvinceEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author boysothymeak
  */
 @Stateless
-public class TblProvinceEntityFacade extends AbstractService<TblProvinceEntity> {
+public class TblProvinceEntityService extends AbstractService<TblProvinceEntity> {
 
     @PersistenceContext(unitName = "com.mycompany_LoanApplication_war_1.0PU")
     private EntityManager em;
@@ -25,8 +26,18 @@ public class TblProvinceEntityFacade extends AbstractService<TblProvinceEntity> 
         return em;
     }
 
-    public TblProvinceEntityFacade() {
+    public TblProvinceEntityService() {
         super(TblProvinceEntity.class);
     }
-    
+
+    public List<TblProvinceEntity> getAllProvince() {
+        try {
+            return getEntityManager().createNamedQuery("TblProvinceEntity.findByStatus", TblProvinceEntity.class)
+                    .setParameter("status", 1)
+                    .getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

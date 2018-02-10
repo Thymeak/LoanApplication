@@ -24,48 +24,30 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author boysothymeak
  */
 @Entity
-@Table(name = "tbl_Village", catalog = "dbLoanApplication", schema = "dbo")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TblVillageEntity.findAll", query = "SELECT t FROM TblVillageEntity t")
-    , @NamedQuery(name = "TblVillageEntity.findByVillageID", query = "SELECT t FROM TblVillageEntity t WHERE t.villageID = :villageID")
-    , @NamedQuery(name = "TblVillageEntity.findByVillageName", query = "SELECT t FROM TblVillageEntity t WHERE t.villageName = :villageName")
-    , @NamedQuery(name = "TblVillageEntity.findByVillageKhName", query = "SELECT t FROM TblVillageEntity t WHERE t.villageKhName = :villageKhName")
-    , @NamedQuery(name = "TblVillageEntity.findByStatus", query = "SELECT t FROM TblVillageEntity t WHERE t.status = :status")
-    , @NamedQuery(name = "TblVillageEntity.findByCommnueID", query = "SELECT t FROM TblVillageEntity t WHERE t.commnueID = :commnueID")})
-public class TblVillageEntity implements Serializable {
+public class TblVillageEntity_Custom implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+   @Id
     @Column(name = "VillageID")
-    private Integer villageID;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 250)
+    private Integer villageID;    
     @Column(name = "Village_Name")
-    private String villageName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 250)
+    private String villageName;    
     @Column(name = "Village_KhName")
     private String villageKhName;
     @Column(name = "Status")
-    private Integer status;
-    @Basic(optional = false)
-    @NotNull
+    private Integer status;    
     @Column(name = "CommnueID")
     private int commnueID;
-
-    public TblVillageEntity() {
+    @Column(name = "Commnue_Name")
+    private String communeName;
+    
+    public TblVillageEntity_Custom() {
     }
 
-    public TblVillageEntity(Integer villageID) {
+    public TblVillageEntity_Custom(Integer villageID) {
         this.villageID = villageID;
     }
 
-    public TblVillageEntity(Integer villageID, String villageName, String villageKhName, int commnueID) {
+    public TblVillageEntity_Custom(Integer villageID, String villageName, String villageKhName, int commnueID) {
         this.villageID = villageID;
         this.villageName = villageName;
         this.villageKhName = villageKhName;
@@ -122,10 +104,10 @@ public class TblVillageEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblVillageEntity)) {
+        if (!(object instanceof TblVillageEntity_Custom)) {
             return false;
         }
-        TblVillageEntity other = (TblVillageEntity) object;
+        TblVillageEntity_Custom other = (TblVillageEntity_Custom) object;
         if ((this.villageID == null && other.villageID != null) || (this.villageID != null && !this.villageID.equals(other.villageID))) {
             return false;
         }
@@ -135,6 +117,20 @@ public class TblVillageEntity implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.loanapplication.TblVillageEntity[ villageID=" + villageID + " ]";
+    }
+
+    /**
+     * @return the communeName
+     */
+    public String getCommuneName() {
+        return communeName;
+    }
+
+    /**
+     * @param communeName the communeName to set
+     */
+    public void setCommuneName(String communeName) {
+        this.communeName = communeName;
     }
     
 }

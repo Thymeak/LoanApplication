@@ -6,70 +6,100 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
-
-
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListTblVillageEntityTitle}"></h:outputText>
-        </ui:define>
+    <ui:composition template="/Template/template.xhtml">       
 
         <ui:define name="body">
-            <h:form id="TblVillageEntityListForm">
-                <p:panel header="#{bundle.ListTblVillageEntityTitle}">
-                    <p:dataTable id="datalist" value="#{tblVillageEntityController.items}" var="item"
-                                 selectionMode="single" selection="#{tblVillageEntityController.selected}"
+
+            <style>
+                .ui-widget-header {
+                    text-align: left;                    
+                }
+            </style>
+            <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:link value="#{bundle.ListVillage}"/>
+                <br/>
+                <p:panel id="basic" header="#{bundle.ListVillage}">
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:selectOneMenu id="onemenu" style="width: 100%;margin-top: 10px;">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItem itemLabel="Village Name" itemValue="Village_Name" />
+                                <f:selectItem itemLabel="Khmer Name" itemValue="Village_KhName" /> 
+                                <f:selectItem itemLabel="Commune Name" itemValue="Commnue_Name" /> 
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
+                            <p:inputText id="input" placeholder="search" style="width: 70%;margin-top: 10px;"/>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4" style="text-align: right;">                            
+                            <p:button value="#{bundle.CreateVillage}" outcome="/Village/Create" icon="ui-icon-plus" styleClass="ui-priority-primary"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <p:dataTable id="datalist" value="#{VillageController.items}" var="item"
+                                 selectionMode="single" selection="#{VillageController.selected}"
                                  paginator="true"
                                  rowKey="#{item.villageID}"
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
-                                 >
-
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                                 >       
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblVillageEntityTitle_villageID}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.villageID}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblVillageEntityTitle_villageName}"/>
+                                <h:outputText value="#{bundle.VillageName}"/>
                             </f:facet>
                             <h:outputText value="#{item.villageName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblVillageEntityTitle_villageKhName}"/>
+                                <h:outputText value="#{bundle.VillageKhName}"/>
                             </f:facet>
                             <h:outputText value="#{item.villageKhName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblVillageEntityTitle_status}"/>
+                                <h:outputText value="#{bundle.CommuneName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.status}"/>
+                            <h:outputText value="#{item.communeName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTblVillageEntityTitle_commnueID}"/>
+                                <h:outputText value="#{bundle.Status}"/>
                             </f:facet>
-                            <h:outputText value="#{item.commnueID}"/>
-                        </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tblVillageEntityController.prepareCreate}" update=":TblVillageEntityCreateForm" oncomplete="PF('TblVillageEntityCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TblVillageEntityViewForm" oncomplete="PF('TblVillageEntityViewDialog').show()" disabled="#{empty tblVillageEntityController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TblVillageEntityEditForm" oncomplete="PF('TblVillageEntityEditDialog').show()" disabled="#{empty tblVillageEntityController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tblVillageEntityController.destroy}" update=":growl,datalist" disabled="#{empty tblVillageEntityController.selected}"/>
-                        </f:facet>
+                            <h:outputText value="Active"/>
+                        </p:column>      
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.Option}"/>
+                            </f:facet>
+                            <p:commandButton actionListener="#{VillageController.prepareEdit(item)}" 
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             icon="ui-icon-pencil" 
+                                             style="margin-top: 0px !important;padding: 0px !important;"/>
+                            <p:commandButton actionListener="#{VillageController.destroy(item)}"
+                                icon="ui-icon-trash" 
+                                update="datalist"
+                                             partialSubmit="true"
+                                             validateClient="true"
+                                             process="@form"
+                                             style="color:red;margin-top: 0px !important;padding: 0px !important;">
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </p:column> 
                     </p:dataTable>
-                </p:panel>
-            </h:form>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                    <br/>
+                </p:panel>
+            </h:form>    
+
         </ui:define>
     </ui:composition>
 

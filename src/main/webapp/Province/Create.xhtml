@@ -4,28 +4,57 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui">    
+    
+    
+    <ui:composition template="/Template/template.xhtml">       
+        
+        <ui:define name="body">
 
-    <ui:composition>
-
-        <p:dialog id="TblProvinceEntityCreateDlg" widgetVar="TblProvinceEntityCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTblProvinceEntityTitle}">
-            <h:form id="TblProvinceEntityCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{tblProvinceEntityController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateTblProvinceEntityLabel_provinceID}" for="provinceID" />
-                        <p:inputText id="provinceID" value="#{tblProvinceEntityController.selected.provinceID}" title="#{bundle.CreateTblProvinceEntityTitle_provinceID}" required="true" requiredMessage="#{bundle.CreateTblProvinceEntityRequiredMessage_provinceID}"/>
-                        <p:outputLabel value="#{bundle.CreateTblProvinceEntityLabel_provinceName}" for="provinceName" />
-                        <p:inputText id="provinceName" value="#{tblProvinceEntityController.selected.provinceName}" title="#{bundle.CreateTblProvinceEntityTitle_provinceName}" required="true" requiredMessage="#{bundle.CreateTblProvinceEntityRequiredMessage_provinceName}"/>
-                        <p:outputLabel value="#{bundle.CreateTblProvinceEntityLabel_provinceKhName}" for="provinceKhName" />
-                        <p:inputText id="provinceKhName" value="#{tblProvinceEntityController.selected.provinceKhName}" title="#{bundle.CreateTblProvinceEntityTitle_provinceKhName}" required="true" requiredMessage="#{bundle.CreateTblProvinceEntityRequiredMessage_provinceKhName}"/>
-                        <p:outputLabel value="#{bundle.CreateTblProvinceEntityLabel_status}" for="status" />
-                        <p:inputText id="status" value="#{tblProvinceEntityController.selected.status}" title="#{bundle.CreateTblProvinceEntityTitle_status}" />
-                    </p:panelGrid>
-                    <p:commandButton actionListener="#{tblProvinceEntityController.create}" value="#{bundle.Save}" update="display,:TblProvinceEntityListForm:datalist,:growl" oncomplete="handleSubmit(args,'TblProvinceEntityCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="TblProvinceEntityCreateDialog.hide()"/>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
-
+            <style>
+                .ui-widget-header {
+                    text-align: left;                    
+                }
+            </style>
+            <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:link outcome="/Province/List" value="Province"/><p:link value=" / Create"/>
+                <br/>
+                <p:growl id="growl" showDetail="true" sticky="true"/>
+                <p:panel id="createProvince" header="#{bundle.CreateProvince}">
+                     <p:focus context="createProvince"/>
+                    
+                    <div class="ui-g">                  
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <p:outputLabel for="ProvinceName" value="#{bundle.ProvinceName} "/>
+                            <p:inputText id="ProvinceName" 
+                                         required="true" 
+                                         requiredMessage="Province Name is require"                                         
+                                         value="#{ProvinceController.selectedCreate.provinceName}" />                            
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <p:outputLabel for="ProvinceKhName" value="#{bundle.ProvinceKhName}"/>
+                            <p:inputText id="ProvinceKhName" 
+                                         required="true" 
+                                         requiredMessage="Province Khmer Name is require."
+                                         value="#{ProvinceController.selectedCreate.provinceKhName}"/>
+                        </div>                        
+                    </div>
+                    <f:facet name="footer">
+                        <p:commandButton value="#{bundle.Create}" 
+                                         update="createProvince growl" 
+                                         actionListener="#{ProvinceController.create}" 
+                                         partialSubmit="true"
+                                         validateClient="true" 
+                                         process="@form"/>
+                        <p:commandButton value="#{bundle.Clear}">
+                            <p:ajax resetValues="true" update="createProvince" listener="#{ProvinceController.prepareCreate}"/>
+                        </p:commandButton>
+                        
+                        
+                    </f:facet>
+                </p:panel>
+            </h:form>        
+        </ui:define>
     </ui:composition>
+
 </html>

@@ -3,10 +3,17 @@ package com.mycompany.loanapplication.controller;
 import com.mycompany.loanapplication.entities.TblVillageEntity;
 import com.mycompany.loanapplication.controller.util.JsfUtil;
 import com.mycompany.loanapplication.controller.util.JsfUtil.PersistAction;
-import com.mycompany.loanapplication.service.TblVillageEntityFacade;
+import com.mycompany.loanapplication.entities.TblCommuneEntity_Custom;
+import com.mycompany.loanapplication.entities.TblVillageEntity_Custom;
+import com.mycompany.loanapplication.service.TblCommnueEntityService;
+import com.mycompany.loanapplication.service.TblVillageEntityService;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +26,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@Named("tblVillageEntityController")
+@Named("VillageController")
 @SessionScoped
-public class TblVillageEntityController implements Serializable {
+public class VillageController implements Serializable {
 
     @EJB
-    private com.mycompany.loanapplication.service.TblVillageEntityFacade ejbFacade;
-    private List<TblVillageEntity> items = null;
-    private TblVillageEntity selected;
+    private com.mycompany.loanapplication.service.TblVillageEntityService ejbFacade;
+    @EJB
+    private TblCommnueEntityService commnueEntityService;
 
-    public TblVillageEntityController() {
+    private List<TblVillageEntity_Custom> items = null;
+    private TblVillageEntity selected;
+    private TblVillageEntity selectedCreate;
+    private Map<String, String> listCommune;
+
+    public VillageController() {
+        selectedCreate = new TblVillageEntity();
     }
 
     public TblVillageEntity getSelected() {
@@ -45,50 +58,76 @@ public class TblVillageEntityController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private TblVillageEntityFacade getFacade() {
+    private TblVillageEntityService getFacade() {
         return ejbFacade;
     }
 
     public TblVillageEntity prepareCreate() {
-        selected = new TblVillageEntity();
+        selected = selectedCreate;
+        selectedCreate = new TblVillageEntity();
         initializeEmbeddableKey();
-        return selected;
+        return selectedCreate;
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TblVillageEntityCreated"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgCreateVillage"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            selectedCreate = new TblVillageEntity();
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TblVillageEntityUpdated"));
+    public void prepareEdit(TblVillageEntity_Custom entity) throws IOException {
+        selected = new TblVillageEntity();
+        selected.setVillageID(entity.getVillageID());
+        selected.setVillageName(entity.getVillageName());
+        selected.setVillageKhName(entity.getVillageKhName());
+        selected.setCommnueID(entity.getCommnueID());
+        selected.setStatus(entity.getStatus());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/LoanApplication/Village/Edit.xhtml");
     }
 
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TblVillageEntityDeleted"));
+    public void update() {
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgEditVillage"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
-    public List<TblVillageEntity> getItems() {
+    public void destroy(TblVillageEntity_Custom entity) {
+        selected = new TblVillageEntity();
+        selected.setVillageID(entity.getVillageID());
+        selected.setVillageName(entity.getVillageName());
+        selected.setVillageKhName(entity.getVillageKhName());
+        selected.setCommnueID(entity.getCommnueID());
+        selected.setStatus(entity.getStatus());
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgDeleteVillage"));
+        if (!JsfUtil.isValidationFailed()) {
+            selected = null; // Remove selection
+            items = null;    // Invalidate list of items to trigger re-query.
+        }
+    }
+
+    public List<TblVillageEntity_Custom> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getFacade().getAllVillage();
         }
         return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
+        if (selected != null || selectedCreate != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
+                if (persistAction == PersistAction.DELETE) {
+                    selected.setStatus(0);
                     getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                } else if(persistAction == PersistAction.UPDATE){
+                    getFacade().edit(selected);
+                }else if(persistAction == PersistAction.CREATE){
+                    selectedCreate.setStatus(1);
+                    getFacade().edit(selectedCreate);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -129,7 +168,7 @@ public class TblVillageEntityController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            TblVillageEntityController controller = (TblVillageEntityController) facesContext.getApplication().getELResolver().
+            VillageController controller = (VillageController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "tblVillageEntityController");
             return controller.getTblVillageEntity(getKey(value));
         }
@@ -160,6 +199,42 @@ public class TblVillageEntityController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * @return the selectedCreate
+     */
+    public TblVillageEntity getSelectedCreate() {
+        return selectedCreate;
+    }
+
+    /**
+     * @param selectedCreate the selectedCreate to set
+     */
+    public void setSelectedCreate(TblVillageEntity selectedCreate) {
+        this.selectedCreate = selectedCreate;
+    }
+
+    /**
+     * @return the listCommune
+     */
+    public Map<String, String> getListCommune() {
+        listCommune = new HashMap<>();
+        List<TblCommuneEntity_Custom> list = new ArrayList<>();
+        list = commnueEntityService.getAllCommune();
+
+        for (TblCommuneEntity_Custom r : list) {
+            listCommune.put(r.getCommnueName(), r.getCommnueID().toString());
+        }
+
+        return listCommune;
+    }
+
+    /**
+     * @return the commnueEntityService
+     */
+    public TblCommnueEntityService getCommnueEntityService() {
+        return commnueEntityService;
     }
 
 }

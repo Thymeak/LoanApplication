@@ -38,7 +38,6 @@ public class TblProvinceEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ProvinceID")
     private Integer provinceID;
     @Basic(optional = false)

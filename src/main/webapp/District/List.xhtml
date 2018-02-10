@@ -16,6 +16,8 @@
                 }
             </style>
             <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
+                <p:link value="District"/>
+                <br/>
                 <p:panel id="basic" header="#{bundle.ListDistrict}">
 
                     <div class="ui-g">
@@ -57,9 +59,9 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ProvinceID}"/>
+                                <h:outputText value="#{bundle.ProvinceName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.provinceID}"/>
+                            <h:outputText value="#{item.provinceName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -71,13 +73,13 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.Option}"/>
                             </f:facet>
-                            <p:commandButton actionListener="#{CurrencyController.prepareEdit(item)}" 
+                            <p:commandButton actionListener="#{DistrictController.prepareEdit(item)}" 
                                              partialSubmit="true"
                                              validateClient="true"
                                              process="@form"
                                              icon="ui-icon-pencil" 
                                              style="margin-top: 0px !important;padding: 0px !important;"/>
-                            <p:commandButton actionListener="#{CurrencyController.destroy(item)}"
+                            <p:commandButton actionListener="#{DistrictController.destroy(item)}"
                                 icon="ui-icon-trash" 
                                 update="datalist"
                                              partialSubmit="true"

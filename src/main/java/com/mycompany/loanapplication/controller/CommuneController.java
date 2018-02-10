@@ -3,10 +3,18 @@ package com.mycompany.loanapplication.controller;
 import com.mycompany.loanapplication.entities.TblCommnueEntity;
 import com.mycompany.loanapplication.controller.util.JsfUtil;
 import com.mycompany.loanapplication.controller.util.JsfUtil.PersistAction;
-import com.mycompany.loanapplication.service.TblCommnueEntityFacade;
+import com.mycompany.loanapplication.entities.TblCommuneEntity_Custom;
+import com.mycompany.loanapplication.entities.TblDistrictEntity;
+import com.mycompany.loanapplication.entities.TblDistrictEntity_Custom;
+import com.mycompany.loanapplication.service.TblCommnueEntityService;
+import com.mycompany.loanapplication.service.TblDistrictEntityService;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +27,23 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@Named("tblCommnueEntityController")
+@Named("CommuneController")
 @SessionScoped
-public class TblCommnueEntityController implements Serializable {
+public class CommuneController implements Serializable {
 
     @EJB
-    private com.mycompany.loanapplication.service.TblCommnueEntityFacade ejbFacade;
-    private List<TblCommnueEntity> items = null;
+    private com.mycompany.loanapplication.service.TblCommnueEntityService ejbFacade;
+    
+    @EJB
+    private TblDistrictEntityService districtEntityService;
+    
+    private List<TblCommuneEntity_Custom> items = null;
     private TblCommnueEntity selected;
+    private TblCommnueEntity selectedCreate;
+    private Map<String,String> listDistrict;
 
-    public TblCommnueEntityController() {
+    public CommuneController() {
+        selectedCreate = new TblCommnueEntity();
     }
 
     public TblCommnueEntity getSelected() {
@@ -45,50 +60,74 @@ public class TblCommnueEntityController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private TblCommnueEntityFacade getFacade() {
+    private TblCommnueEntityService getFacade() {
         return ejbFacade;
     }
 
     public TblCommnueEntity prepareCreate() {
-        selected = new TblCommnueEntity();
+        selectedCreate = new TblCommnueEntity();
         initializeEmbeddableKey();
-        return selected;
+        return selectedCreate;
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("TblCommnueEntityCreated"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgCreateCommune"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            selectedCreate = new TblCommnueEntity();
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TblCommnueEntityUpdated"));
+    public void prepareEdit(TblCommuneEntity_Custom entity) throws IOException {
+        selected = new TblCommnueEntity();
+        selected.setCommnueID(entity.getCommnueID());
+        selected.setCommnueKhName(entity.getCommnueKhName());
+        selected.setCommnueName(entity.getCommnueName());
+        selected.setDistrictID(entity.getDistrictID());
+        selected.setStatus(entity.getStatus());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/LoanApplication/Commune/Edit.xhtml");
     }
 
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TblCommnueEntityDeleted"));
+    public void update() {
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgEditCommune"));
+        if (!JsfUtil.isValidationFailed()) {
+            items = null;
+        }
+    }
+
+    public void destroy(TblCommuneEntity_Custom entity) {
+        selected = new TblCommnueEntity();
+        selected.setCommnueID(entity.getCommnueID());
+        selected.setCommnueKhName(entity.getCommnueKhName());
+        selected.setCommnueName(entity.getCommnueName());
+        selected.setDistrictID(entity.getDistrictID());
+        selected.setStatus(0);
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgDeleteCommune"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
-    public List<TblCommnueEntity> getItems() {
+    public List<TblCommuneEntity_Custom> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getFacade().getAllCommune();
         }
         return items;
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
+        if (selected != null || selectedCreate != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != PersistAction.DELETE) {
+                if (persistAction == PersistAction.DELETE) {
+                    selected.setStatus(0);
                     getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
+                } else if (persistAction == PersistAction.UPDATE) {
+                    getFacade().edit(selected);
+                } else if (persistAction == PersistAction.CREATE) {
+                    selectedCreate.setStatus(1);
+                    getFacade().create(selectedCreate);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -129,7 +168,7 @@ public class TblCommnueEntityController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            TblCommnueEntityController controller = (TblCommnueEntityController) facesContext.getApplication().getELResolver().
+            CommuneController controller = (CommuneController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "tblCommnueEntityController");
             return controller.getTblCommnueEntity(getKey(value));
         }
@@ -160,6 +199,49 @@ public class TblCommnueEntityController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * @return the selectedCreate
+     */
+    public TblCommnueEntity getSelectedCreate() {
+        return selectedCreate;
+    }
+
+    /**
+     * @param selectedCreate the selectedCreate to set
+     */
+    public void setSelectedCreate(TblCommnueEntity selectedCreate) {
+        this.selectedCreate = selectedCreate;
+    }
+
+    /**
+     * @return the listDistrict
+     */
+    public Map<String,String> getListDistrict() {
+        
+        List<TblDistrictEntity_Custom> entity = new ArrayList<TblDistrictEntity_Custom>();
+        entity = getDistrictEntityService().getAllDistrict();
+        listDistrict = new HashMap<>();
+        for(TblDistrictEntity_Custom r : entity){
+            listDistrict.put(r.getDistrictName(), r.getDistrictID().toString());
+        }        
+        
+        return listDistrict;
+    }
+
+    /**
+     * @param listDistrict the listDistrict to set
+     */
+    public void setListDistrict(Map<String,String> listDistrict) {
+        this.listDistrict = listDistrict;
+    }
+
+    /**
+     * @return the districtEntityService
+     */
+    public TblDistrictEntityService getDistrictEntityService() {
+        return districtEntityService;
     }
 
 }

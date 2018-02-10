@@ -17,48 +17,48 @@
                 }
             </style>
             <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
-                <p:link value="#{bundle.ListVillage}" outcome="/Village/List"/><p:link value=" / Create"/>
+                <p:link value="Commune" outcome="/Commune/List"/><p:link value=" / Create"/>
                 <br/>
                 <p:growl id="growl" showDetail="true" sticky="true"/>
-                <p:panel id="createVillage" header="#{bundle.CreateVillage}">
-                     <p:focus context="createVillage"/>
+                <p:panel id="createCommune" header="#{bundle.CreateCommune}">
+                     <p:focus context="createCommune"/>
                     
                     <div class="ui-g">                  
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
-                            <p:outputLabel for="VillageName" value="#{bundle.VillageName}" style="padding-right: 10px;"/>
-                            <p:inputText id="VillageName" 
+                            <p:outputLabel for="CommuneName" value="#{bundle.CommuneName} "/>
+                            <p:inputText id="CommuneName" 
                                          required="true" 
-                                         requiredMessage="Village Name is require"                                         
-                                         value="#{VillageController.selectedCreate.villageName}" />                            
+                                         requiredMessage="Commune Name is require"                                         
+                                         value="#{CommuneController.selectedCreate.commnueName}" />                            
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
-                            <p:outputLabel for="VillageKhName" value="#{bundle.VillageKhName}"/>
-                            <p:inputText id="VillageKhName" 
+                            <p:outputLabel for="CommuneKhName" value="#{bundle.CommuneKhName}"/>
+                            <p:inputText id="CommuneKhName" 
                                          required="true" 
-                                         requiredMessage="Village Khmer Name is require."
-                                         value="#{VillageController.selectedCreate.villageKhName}"/>
+                                         requiredMessage="Commune Khmer Name is require."
+                                         value="#{CommuneController.selectedCreate.commnueKhName}"/>
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
-                            <p:outputLabel for="SelectCommune" value="#{bundle.SelectCommune}"/>
-                            <p:selectOneMenu id="SelectCommune" value="#{VillageController.selectedCreate.commnueID}" 
+                            <p:outputLabel for="SelectDistrict" value="#{bundle.SelectDistrict}"/>
+                            <p:selectOneMenu id="SelectDistrict" value="#{CommuneController.selectedCreate.districtID}" 
                                              style="width:300px;margin-top: 9px;" required="true"
-                                             requiredMessage="Select Commune is require."
+                                             requiredMessage="Select District is require."
                                              filter="true"
                                              filterMatchMode="startsWith">
-                                <f:selectItem itemLabel="#{bundle.SelectCommune}" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{VillageController.listCommune}" />
+                                <f:selectItem itemLabel="#{bundle.SelectDistrict}" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{CommuneController.listDistrict}" />
                             </p:selectOneMenu>
                         </div>
                     </div>
                     <f:facet name="footer">
                         <p:commandButton value="#{bundle.Create}" 
-                                         update="createVillage growl" 
-                                         actionListener="#{VillageController.create}" 
+                                         update="createCommune growl" 
+                                         actionListener="#{CommuneController.create}" 
                                          partialSubmit="true"
                                          validateClient="true" 
                                          process="@form"/>
                         <p:commandButton value="#{bundle.Clear}">
-                            <p:ajax resetValues="true" update="createVillage" listener="#{VillageController.prepareCreate}"/>
+                            <p:ajax resetValues="true" update="createCommune" listener="#{CommuneController.prepareCreate}"/>
                         </p:commandButton>
                         
                         

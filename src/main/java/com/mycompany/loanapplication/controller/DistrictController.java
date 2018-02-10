@@ -3,10 +3,17 @@ package com.mycompany.loanapplication.controller;
 import com.mycompany.loanapplication.entities.TblDistrictEntity;
 import com.mycompany.loanapplication.controller.util.JsfUtil;
 import com.mycompany.loanapplication.controller.util.JsfUtil.PersistAction;
+import com.mycompany.loanapplication.entities.TblDistrictEntity_Custom;
+import com.mycompany.loanapplication.entities.TblProvinceEntity;
 import com.mycompany.loanapplication.service.TblDistrictEntityService;
+import com.mycompany.loanapplication.service.TblProvinceEntityService;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,9 +32,14 @@ public class DistrictController implements Serializable {
 
     @EJB
     private com.mycompany.loanapplication.service.TblDistrictEntityService ejbFacade;
-    private List<TblDistrictEntity> items = null;
+
+    @EJB
+    private TblProvinceEntityService provinceEntityService;
+
+    private List<TblDistrictEntity_Custom> items = null;
     private TblDistrictEntity selected;
     private TblDistrictEntity selectCreate;
+    private Map<String, String> listProvince;
 
     public DistrictController() {
         selectCreate = new TblDistrictEntity();
@@ -58,28 +70,47 @@ public class DistrictController implements Serializable {
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MsgCreateDistrict"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgCreateDistrict"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
             selectCreate = new TblDistrictEntity();
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("TblDistrictEntityUpdated"));
+    public void prepareEdit(TblDistrictEntity_Custom entity) throws IOException {
+        selected = new TblDistrictEntity();
+        selected.setDistrictID(entity.getDistrictID());
+        selected.setDistrictKhName(entity.getDistrictKhName());
+        selected.setDistrictName(entity.getDistrictName());
+        selected.setProvinceID(entity.getProvinceID());
+        selected.setStatus(entity.getStatus());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/LoanApplication/District/Edit.xhtml");
     }
 
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("TblDistrictEntityDeleted"));
+    public void update() {
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgUpdateDistrict"));
+        if (!JsfUtil.isValidationFailed()) {
+            items = null;
+        }
+    }
+
+    public void destroy(TblDistrictEntity_Custom entity) {
+        selected = new TblDistrictEntity();
+        selected.setDistrictID(entity.getDistrictID());
+        selected.setDistrictKhName(entity.getDistrictKhName());
+        selected.setDistrictName(entity.getDistrictName());
+        selected.setProvinceID(entity.getProvinceID());
+        selected.setStatus(0);
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgDeleteDistrict"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
-    public List<TblDistrictEntity> getItems() {
+    public List<TblDistrictEntity_Custom> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getFacade().getAllDistrict();
         }
         return items;
     }
@@ -91,10 +122,10 @@ public class DistrictController implements Serializable {
                 if (persistAction == PersistAction.DELETE) {
                     selected.setStatus(0);
                     getFacade().edit(selected);
-                } else if(persistAction == PersistAction.CREATE) {
+                } else if (persistAction == PersistAction.CREATE) {
                     selectCreate.setStatus(1);
                     getFacade().create(selectCreate);
-                }else if(persistAction == PersistAction.UPDATE){
+                } else if (persistAction == PersistAction.UPDATE) {
                     getFacade().edit(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
@@ -181,6 +212,35 @@ public class DistrictController implements Serializable {
      */
     public void setSelectCreate(TblDistrictEntity selectCreate) {
         this.selectCreate = selectCreate;
+    }
+
+    /**
+     * @return the listProvince
+     */
+    public Map<String, String> getListProvince() {
+
+        listProvince = new HashMap<>();
+        List<TblProvinceEntity> provinces = new ArrayList<>();
+        provinces = getProvinceEntityService().getAllProvince();
+        for (TblProvinceEntity r : provinces) {
+            listProvince.put(r.getProvinceName(), r.getProvinceID().toString());
+        }
+
+        return listProvince;
+    }
+
+    /**
+     * @param listProvince the listProvince to set
+     */
+    public void setListProvince(Map<String, String> listProvince) {
+        this.listProvince = listProvince;
+    }
+
+    /**
+     * @return the provinceEntityService
+     */
+    public TblProvinceEntityService getProvinceEntityService() {
+        return provinceEntityService;
     }
 
 }

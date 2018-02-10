@@ -8,25 +8,24 @@
 
     <ui:composition template="/Template/template.xhtml">       
 
-        <ui:define name="body">  
+        <ui:define name="body">
+
             <style>
                 .ui-widget-header {
                     text-align: left;                    
                 }
             </style>
             <h:form style="margin-top:10%;margin-left: 10%;margin-right: 10%">
-                <p:link value="Province"/>
+                <p:link value="Commune"/>
                 <br/>
-                <p:growl id="growl" showDetail="true" sticky="true"/>
-                <p:panel id="basic" header="#{bundle.ListProvince}">
+                <p:panel id="basic" header="#{bundle.ListCommnue}">
 
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
                             <p:selectOneMenu id="onemenu" style="width: 100%;margin-top: 10px;">
                                 <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItem itemLabel="Province ID" itemValue="ProvinceID" />
-                                <f:selectItem itemLabel="Province Name" itemValue="Province_Name" />   
-                                <f:selectItem itemLabel="Province KhName" itemValue="Province_KhName" />  
+                                <f:selectItem itemLabel="Commune Name" itemValue="Commune_Name" />
+                                <f:selectItem itemLabel="Khmer Name" itemValue="Commune_KhName" />                              
                             </p:selectOneMenu>
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-4" style="text-align: center">
@@ -34,30 +33,36 @@
                         </div>
                         <div class="ui-g-12 ui-lg-4" style="text-align: right;">
                             <!--<p:commandButton value="Create Currency" icon="ui-icon-plus" styleClass="ui-priority-primary" />-->
-                            <p:button value="#{bundle.CreateProvince}" outcome="/Province/Create" icon="ui-icon-plus" styleClass="ui-priority-primary"/>
+                            <p:button value="#{bundle.CreateCommune}" outcome="/Commune/Create" icon="ui-icon-plus" styleClass="ui-priority-primary"/>
                         </div>
                     </div>
                     <br/>
-                    <p:dataTable id="datalist" value="#{ProvinceController.items}" var="item"
-                                 selectionMode="single" selection="#{ProvinceController.selected}"
+                    <p:dataTable id="datalist" value="#{CommuneController.items}" var="item"
+                                 selectionMode="single" selection="#{CommuneController.selected}"
                                  paginator="true"
-                                 rowKey="#{item.provinceID}"
+                                 rowKey="#{item.commnueID}"
                                  rows="10"
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >       
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ProvinceName}"/>
+                                <h:outputText value="#{bundle.CommuneName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.provinceName}"/>
+                            <h:outputText value="#{item.commnueName}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ProvinceKhName}"/>
+                                <h:outputText value="#{bundle.CommuneKhName}"/>
                             </f:facet>
-                            <h:outputText value="#{item.provinceKhName}"/>
-                        </p:column>                       
+                            <h:outputText value="#{item.commnueKhName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.DistrictName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.districtName}"/>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.Status}"/>
@@ -68,15 +73,15 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.Option}"/>
                             </f:facet>
-                            <p:commandButton actionListener="#{ProvinceController.prepareEdit(item)}" 
+                            <p:commandButton actionListener="#{CommuneController.prepareEdit(item)}" 
                                              partialSubmit="true"
                                              validateClient="true"
                                              process="@form"
                                              icon="ui-icon-pencil" 
                                              style="margin-top: 0px !important;padding: 0px !important;"/>
-                            <p:commandButton actionListener="#{ProvinceController.destroy(item)}"
+                            <p:commandButton actionListener="#{CommuneController.destroy(item)}"
                                 icon="ui-icon-trash" 
-                                update="@form datalist"
+                                update="datalist"
                                              partialSubmit="true"
                                              validateClient="true"
                                              process="@form"

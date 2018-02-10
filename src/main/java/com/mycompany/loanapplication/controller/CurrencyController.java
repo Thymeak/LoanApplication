@@ -56,7 +56,7 @@ public class CurrencyController implements Serializable {
     public void prepareEdit(TblCurrencyEntity entity) throws IOException{    
         selected = new TblCurrencyEntity();
         selected = entity;
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/LoanApplication/faces/Currency/Edit.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/LoanApplication/Currency/Edit.xhtml");
     }
 
     public TblCurrencyEntity prepareCreate() {
@@ -66,7 +66,7 @@ public class CurrencyController implements Serializable {
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("MsgCreateCurrency"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgCreateCurrency"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
             selectedCreate = new TblCurrencyEntity();
@@ -74,22 +74,23 @@ public class CurrencyController implements Serializable {
     }
 
     public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("MsgUpdateCurreny"));
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgUpdateCurreny"));
     }
 
     public void destroy(TblCurrencyEntity entity) {
         selected = new TblCurrencyEntity();
         selected = entity;
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("MsgDeleteCurrency"));
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("/properties/Bundle").getString("MsgDeleteCurrency"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
+            getItems();
         }
     }
 
     public List<TblCurrencyEntity> getItems() {
         if (items == null) {
-            items = getFacade().findAll();
+            items = getFacade().getAllCurrency();
         }
         return items;
     }
